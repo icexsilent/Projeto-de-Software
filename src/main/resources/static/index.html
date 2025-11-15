@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rede Mais Social</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .container { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); max-width: 500px; width: 100%; text-align: center; }
+    h1 { color: #5a67d8; margin-bottom: 10px; font-size: 2.2em; }
+    p { color: #666; margin-bottom: 30px; }
+    .vaga { background: #f8f9ff; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px solid #e0e7ff; }
+    .vaga h3 { color: #4338ca; margin-bottom: 8px; }
+    button { background: #6366f1; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+    button:hover { background: #4f46e5; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(99,102,241,0.3); }
+    .success { color: #10b981; font-weight: bold; margin-top: 15px; display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Rede Mais Social</h1>
+    <p>Conectando corações que querem ajudar</p>
+
+    <div class="vaga">
+      <h3>Voluntário na Cozinha</h3>
+      <p><strong>ONG Amor ao Próximo</strong><br>
+         São Paulo • 4h/semana</p>
+      <button onclick="candidatar()">Me candidatar</button>
+      <div id="success" class="success">Candidatura enviada com sucesso!</div>
+    </div>
+  </div>
+
+  <script>
+    function candidatar() {
+      const btn = event.target;
+      btn.disabled = true;
+      btn.textContent = "Enviado!";
+      document.getElementById("success").style.display = "block";
+    }
+  </script>
+</body>
+</html>
