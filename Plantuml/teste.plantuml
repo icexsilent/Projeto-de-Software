@@ -1,0 +1,201 @@
+@startuml
+title Rede Mais Social - Diagrama de Classes (Completo, estilo professora)
+
+skinparam classBackgroundColor #FFF2CC
+skinparam classBorderColor #555555
+skinparam shadowing true
+skinparam linetype ortho
+left to right direction
+hide circle
+
+class Entidade {
+  - id : String
+  - nomeCompleto : String
+  - email : String
+  - telefone : String
+  + getDados() : void
+  + atualizarContato() : void
+}
+
+class PessoaFisica {
+  - cpf : String
+  - rg : String
+  - dataNascimento : Date
+  + validarDocumento() : void
+}
+
+class PessoaJuridica {
+  - cnpj : String
+  - razaoSocial : String
+  - inscricaoEstadual : String
+  + validarCNPJ() : void
+}
+
+Entidade <|-- PessoaFisica
+Entidade <|-- PessoaJuridica
+
+class Candidato {
+  - dataCadastro : Date
+  - situacao : String
+  + candidatar(vaga:Vaga) : void
+  + cancelarCandidatura(vaga:Vaga) : void
+}
+
+PessoaFisica <|-- Candidato
+
+class ONG {
+  - missao : String
+  - site : String
+  + criarCampanha(c:Campanha) : void
+  + aprovarCandidatos() : void
+}
+
+PessoaJuridica <|-- ONG
+
+class Perfil {
+  - descricaoPessoal : String
+  - raioBuscaKm : int
+  + atualizarDescricao() : void
+}
+
+class Habilidade {
+  - descricao : String
+  + cadastrar() : void
+}
+
+class Interesse {
+  - descricao : String
+  + definir() : void
+}
+
+Candidato "1" -- "1" Perfil : possui >
+Perfil "1" -- "0..*" Habilidade : possui >
+Perfil "1" -- "0..*" Interesse : possui >
+
+class Campanha {
+  - id : String
+  - titulo : String
+  - descricao : String
+  - causa : String
+  - dataInicio : Date
+  - dataFim : Date
+  - status : String
+  + ativar() : void
+  + encerrar() : void
+}
+
+class Vaga {
+  - id : String
+  - descricao : String
+  - quantidade : int
+  - localizacao : String
+  - cargaHorariaSemanal : int
+  + abrir() : void
+  + fechar() : void
+}
+
+ONG "1" -- "0..*" Campanha : cria >
+Campanha "1" -- "1..*" Vaga : possui >
+
+Vaga "1" -- "0..*" Habilidade : requer >
+
+class Candidatura {
+  - id : String
+  - data : Date
+  - mensagem : String
+  - status : String
+  - scoreAdequacao : float
+  + aprovar() : void
+  + recusar() : void
+  + cancelar() : void
+}
+
+class ListaCandidatos {
+  - id : String
+  - criterioOrdenacao : String
+  - dataAtualizacao : Date
+  + ordenar() : void
+}
+
+class HistoricoCandidatura {
+  - id : String
+  - data : Date
+  - statusAnterior : String
+  - statusAtual : String
+  - observacao : String
+  + registrarMudanca() : void
+}
+
+Candidato "1" -- "0..*" Candidatura : envia >
+Vaga "1" -- "0..*" Candidatura : recebe >
+Vaga "1" -- "1" ListaCandidatos : mantem >
+ListaCandidatos "1" -- "0..*" Candidatura : contem >
+Candidatura "1" -- "0..*" HistoricoCandidatura : gera >
+
+class Recomendacao {
+  - dataRecomendacao : Date
+  - status : String
+  - percentualRecomendacao : int
+  + gerar() : void
+}
+
+Candidato "1" -- "0..*" Recomendacao : recebe >
+Vaga "1" ..> Recomendacao : basePara >
+
+class Beneficiario {
+  - situacaoSocial : String
+  + atualizarCadastro() : void
+}
+
+PessoaFisica <|-- Beneficiario
+
+class SolicitacaoAjuda {
+  - id : String
+  - descricao : String
+  - urgencia : String
+  - dataSolicitacao : Date
+  - statusSolicitacao : String
+  + registrar() : void
+  + fechar() : void
+}
+
+Beneficiario "1" -- "0..*" SolicitacaoAjuda : solicita >
+ONG "1" -- "0..*" SolicitacaoAjuda : atende >
+
+class Doacao {
+  - id : String
+  - tipo : String      ' financeira ou itens
+  - valor : float
+  - descricaoItens : String
+  - data : Date
+  - status : String
+  + registrar() : void
+  + confirmar() : void
+}
+
+Candidato "0..1" -- "0..*" Doacao : realiza >
+ONG "1" -- "0..*" Doacao : recebe >
+
+class AvaliacaoVoluntario {
+  - id : String
+  - nota : int
+  - comentario : String
+  - data : Date
+  + registrar() : void
+}
+
+class AvaliacaoCampanha {
+  - id : String
+  - nota : int
+  - comentario : String
+  - data : Date
+  + registrar() : void
+}
+
+ONG "1" -- "0..*" AvaliacaoVoluntario : avalia >
+AvaliacaoVoluntario "0..*" -- "1" Candidato : de >
+
+Candidato "1" -- "0..*" AvaliacaoCampanha : avalia >
+AvaliacaoCampanha "0..*" -- "1" Campanha : de >
+
+@enduml
